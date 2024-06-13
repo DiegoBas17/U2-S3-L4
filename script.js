@@ -100,3 +100,31 @@ secondoBottone.addEventListener("click", () => {
     })
     .catch((err) => console.log(err));
 });
+
+const searchForm = document.getElementById("searchForm");
+const searchInput = document.getElementById("searchInput");
+searchForm.addEventListener("submit", (event) => {
+  event.preventDefault();
+  contenitoreCard.innerHTML = "";
+  const query = searchInput.value;
+  fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}`, {
+    method: "GET",
+    headers: {
+      Authorization: "qc8A6GMApQcUJD9kLAGOx0TBzfKn2zwrKbRt0CPoBXwqHXuQDJXw8B5l",
+    },
+  })
+    .then((resp) => {
+      if (resp.ok) {
+        return resp.json();
+      } else {
+        throw new Error("Errore nel caricamento delle immagini");
+      }
+    })
+    .then((objapi) => {
+      console.log(objapi);
+      objapi.photos.forEach((element) => {
+        caricamentoImg(element);
+      });
+    })
+    .catch((err) => console.log(err));
+});
