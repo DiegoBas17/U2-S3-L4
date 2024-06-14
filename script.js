@@ -1,22 +1,32 @@
 const primoBottone = document.getElementById("primoBottone");
 const secondoBottone = document.getElementById("secondoBottone");
 const contenitoreCard = document.getElementById("contenitoreCard");
-const caricamentoImg = function (foto) {
+/* creazioine delle carte */
+const creazioneCarteImg = function (foto) {
   const colDiv = document.createElement("div");
   colDiv.className = "col-md-4";
   const cardDiv = document.createElement("div");
   cardDiv.className = "card mb-4 shadow-sm";
   console.log(foto);
   const img = document.createElement("img");
-  img.className = "bd-placeholder-img card-img-top";
+  img.className = "bd-placeholder-img card-img-top object-fit-cover";
   img.src = foto.src.original;
   img.alt = foto.alt;
+  img.style.height = "300px";
+  /* evento al click dell'img */
+  img.addEventListener("click", () => {
+    window.location.href = foto.url;
+  });
   cardDiv.appendChild(img);
   const cardBody = document.createElement("div");
   cardBody.className = "card-body";
   const cardTitle = document.createElement("h5");
   cardTitle.className = "card-title";
-  cardTitle.textContent = "Lorem Ipsum";
+  cardTitle.textContent = foto.alt;
+  /* evento al click del nome dell'img */
+  cardTitle.addEventListener("click", () => {
+    window.location.href = foto.url;
+  });
   cardBody.appendChild(cardTitle);
   const cardText = document.createElement("p");
   cardText.className = "card-text";
@@ -39,6 +49,7 @@ const caricamentoImg = function (foto) {
   hideBtn.id = "hideBottone";
   hideBtn.textContent = "Hide";
   groupDiv.appendChild(hideBtn);
+  /* evento al click per rimuovere la colonna */
   hideBtn.addEventListener("click", () => {
     colDiv.remove();
   });
@@ -52,7 +63,7 @@ const caricamentoImg = function (foto) {
   colDiv.appendChild(cardDiv);
   contenitoreCard.appendChild(colDiv);
 };
-
+/* evento sul primo bottone */
 primoBottone.addEventListener("click", () => {
   contenitoreCard.innerHTML = "";
   fetch("https://api.pexels.com/v1/search?query=natural", {
@@ -71,12 +82,12 @@ primoBottone.addEventListener("click", () => {
     .then((objapi) => {
       console.log(objapi);
       objapi.photos.forEach((element) => {
-        caricamentoImg(element);
+        creazioneCarteImg(element);
       });
     })
     .catch((err) => console.log(err));
 });
-
+/* evento sul secondo bottone */
 secondoBottone.addEventListener("click", () => {
   contenitoreCard.innerHTML = "";
   fetch("https://api.pexels.com/v1/search?query=dark", {
@@ -95,12 +106,12 @@ secondoBottone.addEventListener("click", () => {
     .then((objapi) => {
       console.log(objapi);
       objapi.photos.forEach((element) => {
-        caricamentoImg(element);
+        creazioneCarteImg(element);
       });
     })
     .catch((err) => console.log(err));
 });
-
+/* barra ricerca */
 const searchForm = document.getElementById("searchForm");
 const searchInput = document.getElementById("searchInput");
 searchForm.addEventListener("submit", (event) => {
@@ -123,7 +134,7 @@ searchForm.addEventListener("submit", (event) => {
     .then((objapi) => {
       console.log(objapi);
       objapi.photos.forEach((element) => {
-        caricamentoImg(element);
+        creazioneCarteImg(element);
       });
     })
     .catch((err) => console.log(err));
